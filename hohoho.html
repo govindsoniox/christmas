@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snowflake Christmas Tree</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Falling snowflakes */
+    .snowflake {
+      color: #fff;
+      font-size: 1.5em;
+      font-family: Arial, sans-serif;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+      position: fixed;
+      top: -10%;
+      z-index: 9999;
+      user-select: none;
+      cursor: default;
+      pointer-events: none;
+      animation-name: snowflakes-shake;
+      animation-duration: 3s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-play-state: running;
+    }
+
+    .snowflake .inner {
+      animation-duration: 10s;
+      animation-name: snowflakes-fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-play-state: running;
+    }
+
+    @keyframes snowflakes-fall {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(110vh);
+      }
+    }
+
+    @keyframes snowflakes-shake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(80px);
+      }
+    }
+
+    /* Tree container */
+    .tree-container {
+      position: fixed;
+      bottom: 20px;
+      right: 50px;
+      width: 300px;
+      height: 400px;
+      z-index: 10000;
+    }
+
+    /* Tree snowflakes that form the tree */
+    .tree-flake {
+      position: absolute;
+      color: #22c55e;
+      font-size: 2em;
+      text-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in forwards;
+      pointer-events: none;
+      font-weight: bold;
+    }
+
+    .tree-flake.dark-green {
+      color: #16a34a;
+      text-shadow: 0 0 8px rgba(22, 163, 74, 0.6);
+    }
+
+    .tree-flake.light-green {
+      color: #4ade80;
+      text-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+    }
+
+    .tree-flake.white {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    .tree-flake.gold {
+      color: #ffd700;
+      font-size: 2.5em;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+    }
+
+    .tree-flake.red {
+      color: #ef4444;
+      text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+      background: transparent;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Interactive ornaments */
+    .ornament {
+      position: absolute;
+      font-size: 1.8em;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      animation: swing 2s ease-in-out infinite;
+      pointer-events: auto;
+    }
+
+    .ornament:hover {
+      transform: scale(1.3);
+    }
+
+    @keyframes swing {
+      0%, 100% {
+        transform: rotate(-5deg);
+      }
+      50% {
+        transform: rotate(5deg);
+      }
+    }
+
+    /* Click instruction */
+    .instruction {
+      position: fixed;
+      bottom: 450px;
+      right: 50px;
+      color: #fff;
+      font-size: 14px;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 15px;
+      border-radius: 8px;
+      opacity: 0;
+      animation: fadeInInstruction 1s ease-in forwards;
+      animation-delay: 4s;
+      z-index: 10001;
+    }
+
+    /* Hide tree button */
+    .hide-tree-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 370px;
+      background: rgba(220, 38, 38, 0.8);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 10002;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      animation: fadeInInstruction 1s ease-in forwards;
+      animation-delay: 4.5s;
+    }
+
+    .hide-tree-btn:hover {
+      background: rgba(185, 28, 28, 0.9);
+      transform: scale(1.05);
+    }
+
+    /* Secret restore message */
+    .secret-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: #4ade80;
+      padding: 30px 50px;
+      border-radius: 15px;
+      font-size: 24px;
+      text-align: center;
+      z-index: 20000;
+      box-shadow: 0 0 30px rgba(74, 222, 128, 0.5);
+      animation: fadeInInstruction 0.5s ease-in forwards;
+    }
+
+    /* Hidden state */
+    .tree-hidden {
+      display: none;
+    }
+
+    @keyframes fadeInInstruction {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Star at the top */
+    .star {
+      color: #ffd700;
+      font-size: 3em;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 1);
+      animation: starTwinkle 2s ease-in-out infinite;
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 0.8;
+      }
+    }
+
+    /* Trunk */
+    .trunk {
+      color: #8b4513;
+      font-size: 2em;
+      text-shadow: 0 0 5px rgba(139, 69, 19, 0.8);
+    }
+
+    /* Snowflake positioning variants */
+    .snowflake:nth-of-type(1) { left: 10%; animation-delay: 0s; }
+    .snowflake:nth-of-type(1) .inner { animation-delay: 0s; }
+    .snowflake:nth-of-type(2) { left: 20%; animation-delay: 1s; }
+    .snowflake:nth-of-type(2) .inner { animation-delay: 1s; }
+    .snowflake:nth-of-type(3) { left: 30%; animation-delay: 2s; }
+    .snowflake:nth-of-type(3) .inner { animation-delay: 2s; }
+    .snowflake:nth-of-type(4) { left: 40%; animation-delay: 0.5s; }
+    .snowflake:nth-of-type(4) .inner { animation-delay: 3s; }
+    .snowflake:nth-of-type(5) { left: 50%; animation-delay: 1.5s; }
+    .snowflake:nth-of-type(5) .inner { animation-delay: 4s; }
+    .snowflake:nth-of-type(6) { left: 60%; animation-delay: 2.5s; }
+    .snowflake:nth-of-type(6) .inner { animation-delay: 5s; }
+    .snowflake:nth-of-type(7) { left: 70%; animation-delay: 3s; }
+    .snowflake:nth-of-type(7) .inner { animation-delay: 6s; }
+    .snowflake:nth-of-type(8) { left: 80%; animation-delay: 0.8s; }
+    .snowflake:nth-of-type(8) .inner { animation-delay: 7s; }
+    .snowflake:nth-of-type(9) { left: 15%; animation-delay: 1.8s; }
+    .snowflake:nth-of-type(9) .inner { animation-delay: 8s; }
+    .snowflake:nth-of-type(10) { left: 25%; animation-delay: 2.2s; }
+    .snowflake:nth-of-type(10) .inner { animation-delay: 9s; }
+    .snowflake:nth-of-type(11) { left: 65%; animation-delay: 0.3s; }
+    .snowflake:nth-of-type(11) .inner { animation-delay: 2.5s; }
+    .snowflake:nth-of-type(12) { left: 85%; animation-delay: 1.2s; }
+    .snowflake:nth-of-type(12) .inner { animation-delay: 3.5s; }
+  </style>
+</head>
+<body>
+  <!-- Falling snowflakes -->
+  <div class="snowflakes" aria-hidden="true">
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+  </div>
+
+  <!-- Tree container -->
+  <div class="tree-container" id="treeContainer"></div>
+
+  <!-- Instruction -->
+  <div class="instruction" id="instruction">🎄 Click on the tree to add ornaments! They'll be saved! 🎄</div>
+
+  <!-- Hide tree button -->
+  <button class="hide-tree-btn" id="hideTreeBtn">❌ Hide Tree Forever</button>
+
+  <script>
+    // Check if user has hidden the tree
+    const treeContainer = document.getElementById('treeContainer');
+    const instruction = document.getElementById('instruction');
+    const hideTreeBtn = document.getElementById('hideTreeBtn');
+    
+    function checkTreeVisibility() {
+      const isTreeHidden = localStorage.getItem('hideChristmasTree');
+      if (isTreeHidden === 'true') {
+        treeContainer.classList.add('tree-hidden');
+        instruction.classList.add('tree-hidden');
+        hideTreeBtn.classList.add('tree-hidden');
+        return false; // Tree should not be shown
+      }
+      return true; // Tree should be shown
+    }
+
+    // Hide tree button functionality
+    hideTreeBtn.addEventListener('click', function() {
+      if (confirm('Are you sure you want to hide the Christmas tree and snowflakes? They will not appear again on future visits.\n\n💡 Secret tip: Type "hohoho" anywhere on the page to bring them back!')) {
+        localStorage.setItem('hideChristmasTree', 'true');
+        treeContainer.style.transition = 'all 0.5s ease';
+        instruction.style.transition = 'all 0.5s ease';
+        hideTreeBtn.style.transition = 'all 0.5s ease';
+        
+        // Also hide snowflakes
+        const snowflakesContainer = document.querySelector('.snowflakes');
+        if (snowflakesContainer) {
+          snowflakesContainer.style.transition = 'all 0.5s ease';
+          snowflakesContainer.style.opacity = '0';
+        }
+        
+        treeContainer.style.opacity = '0';
+        treeContainer.style.transform = 'scale(0.5)';
+        instruction.style.opacity = '0';
+        hideTreeBtn.style.opacity = '0';
+        
+        setTimeout(() => {
+          treeContainer.classList.add('tree-hidden');
+          instruction.classList.add('tree-hidden');
+          hideTreeBtn.classList.add('tree-hidden');
+          if (snowflakesContainer) {
+            snowflakesContainer.classList.add('tree-hidden');
+          }
+        }, 500);
+      }
+    });
+
+    // Secret keyword to restore tree
+    let typedKeys = '';
+    const secretKeyword = 'hohoho';
+    
+    document.addEventListener('keydown', function(e) {
+      typedKeys += e.key;
+      
+      // Keep only last N characters where N is the length of the secret keyword
+      if (typedKeys.length > secretKeyword.length) {
+        typedKeys = typedKeys.slice(-secretKeyword.length);
+      }
+      
+      // Check if the secret keyword was typed
+      if (typedKeys.toLowerCase() === secretKeyword.toLowerCase()) {
+        const isTreeHidden = localStorage.getItem('hideChristmasTree');
+        if (isTreeHidden === 'true') {
+          // Show congratulatory message
+          const message = document.createElement('div');
+          message.className = 'secret-message';
+          message.innerHTML = '🎄 Ho Ho Ho! 🎄<br>The Christmas magic is back!<br>✨ Refreshing page... ✨';
+          document.body.appendChild(message);
+          
+          // Remove the hide flag and reload
+          localStorage.removeItem('hideChristmasTree');
+          
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        }
+        typedKeys = ''; // Reset
+      }
+    });
+
+    // Only build tree if it should be visible
+    const shouldShowTree = checkTreeVisibility();
+    
+    if (!shouldShowTree) {
+      // Exit early if tree is hidden
+    } else {
+      // Tree structure - all green tree foliage using various characters
+      const treeStructure = [
+        // Star
+        { row: 0, positions: [{ x: 150, char: '★', class: 'star gold' }] },
+        
+        // Top of tree - small
+        { row: 1, positions: [{ x: 145, char: '▲', class: '' }, { x: 155, char: '▲', class: 'dark-green' }] },
+        { row: 2, positions: [{ x: 135, char: '▲', class: 'dark-green' }, { x: 150, char: '▲', class: '' }, { x: 165, char: '▲', class: 'light-green' }] },
+        { row: 3, positions: [{ x: 125, char: '♣', class: 'light-green' }, { x: 140, char: '▲', class: '' }, { x: 155, char: '♣', class: 'dark-green' }, { x: 175, char: '▲', class: '' }] },
+        
+        // Middle of tree - getting wider
+        { row: 4, positions: [{ x: 115, char: '▲', class: '' }, { x: 130, char: '♣', class: 'dark-green' }, { x: 145, char: '▲', class: 'light-green' }, { x: 160, char: '♣', class: '' }, { x: 185, char: '▲', class: 'dark-green' }] },
+        { row: 5, positions: [{ x: 105, char: '♣', class: 'dark-green' }, { x: 120, char: '▲', class: '' }, { x: 135, char: '♣', class: 'light-green' }, { x: 150, char: '▲', class: 'dark-green' }, { x: 165, char: '♣', class: '' }, { x: 195, char: '▲', class: 'light-green' }] },
+        { row: 6, positions: [{ x: 95, char: '▲', class: 'light-green' }, { x: 110, char: '♣', class: '' }, { x: 125, char: '▲', class: 'dark-green' }, { x: 140, char: '♣', class: 'light-green' }, { x: 155, char: '▲', class: '' }, { x: 170, char: '♣', class: 'dark-green' }, { x: 205, char: '▲', class: '' }] },
+        { row: 7, positions: [{ x: 85, char: '♣', class: '' }, { x: 100, char: '▲', class: 'dark-green' }, { x: 115, char: '♣', class: 'light-green' }, { x: 130, char: '▲', class: '' }, { x: 145, char: '♣', class: 'dark-green' }, { x: 160, char: '▲', class: 'light-green' }, { x: 175, char: '♣', class: '' }, { x: 215, char: '▲', class: 'dark-green' }] },
+        
+        // Bottom of tree - widest part
+        { row: 8, positions: [{ x: 75, char: '▲', class: 'dark-green' }, { x: 90, char: '♣', class: '' }, { x: 105, char: '▲', class: 'light-green' }, { x: 120, char: '♣', class: 'dark-green' }, { x: 135, char: '▲', class: '' }, { x: 150, char: '♣', class: 'light-green' }, { x: 165, char: '▲', class: 'dark-green' }, { x: 180, char: '♣', class: '' }, { x: 225, char: '▲', class: 'light-green' }] },
+        { row: 9, positions: [{ x: 65, char: '♣', class: 'light-green' }, { x: 80, char: '▲', class: '' }, { x: 95, char: '♣', class: 'dark-green' }, { x: 110, char: '▲', class: 'light-green' }, { x: 125, char: '♣', class: '' }, { x: 140, char: '▲', class: 'dark-green' }, { x: 155, char: '♣', class: 'light-green' }, { x: 170, char: '▲', class: '' }, { x: 185, char: '♣', class: 'dark-green' }, { x: 235, char: '▲', class: '' }] },
+        
+        // Trunk
+        { row: 10, positions: [{ x: 140, char: '█', class: 'trunk' }, { x: 160, char: '█', class: 'trunk' }] },
+        { row: 11, positions: [{ x: 140, char: '█', class: 'trunk' }, { x: 160, char: '█', class: 'trunk' }] },
+        { row: 12, positions: [{ x: 140, char: '█', class: 'trunk' }, { x: 160, char: '█', class: 'trunk' }] }
+      ];
+
+      let currentRow = 0;
+      let currentPosInRow = 0;
+
+      function addNextSnowflake() {
+        if (currentRow >= treeStructure.length) {
+          return; // Tree is complete
+        }
+
+        const row = treeStructure[currentRow];
+        if (currentPosInRow >= row.positions.length) {
+          // Move to next row
+          currentRow++;
+          currentPosInRow = 0;
+          
+          if (currentRow >= treeStructure.length) {
+            loadSavedOrnaments(); // Load saved ornaments after tree is built
+            return; // Tree is complete
+          }
+          
+          // Slight delay before starting next row
+          setTimeout(addNextSnowflake, 150);
+          return;
+        }
+
+        const position = row.positions[currentPosInRow];
+        const flake = document.createElement('div');
+        flake.className = `tree-flake ${position.class}`;
+        flake.textContent = position.char;
+        flake.style.left = `${position.x}px`;
+        flake.style.top = `${currentRow * 30}px`;
+        flake.style.animationDelay = '0s';
+        
+        treeContainer.appendChild(flake);
+        
+        currentPosInRow++;
+        
+        // Add next snowflake after a short delay
+        setTimeout(addNextSnowflake, 100);
+      }
+
+      // Start building the tree after a short delay
+      setTimeout(addNextSnowflake, 1000);
+
+      // Interactive ornament adding with localStorage persistence
+      const ornamentSymbols = ['🔴', '🟡', '🔵', '🟣', '🟠', '⭐', '🎁', '🔔', '🎀'];
+      let ornamentIndex = 0;
+
+      // Save ornaments to localStorage
+      function saveOrnaments() {
+        const ornaments = [];
+        document.querySelectorAll('.ornament').forEach(ornament => {
+          ornaments.push({
+            symbol: ornament.textContent,
+            x: ornament.style.left,
+            y: ornament.style.top
+          });
+        });
+        localStorage.setItem('christmasTreeOrnaments', JSON.stringify(ornaments));
+      }
+
+      // Load ornaments from localStorage
+      function loadSavedOrnaments() {
+        const saved = localStorage.getItem('christmasTreeOrnaments');
+        if (saved) {
+          const ornaments = JSON.parse(saved);
+          ornaments.forEach((ornamentData, index) => {
+            setTimeout(() => {
+              createOrnament(ornamentData.symbol, ornamentData.x, ornamentData.y);
+            }, index * 100);
+          });
+        }
+      }
+
+      // Create an ornament element
+      function createOrnament(symbol, x, y) {
+        const ornament = document.createElement('div');
+        ornament.className = 'ornament';
+        ornament.textContent = symbol;
+        ornament.style.left = x;
+        ornament.style.top = y;
+        ornament.style.animationDelay = `${Math.random() * 0.5}s`;
+        
+        // Remove ornament on click
+        ornament.addEventListener('click', function(event) {
+          event.stopPropagation();
+          ornament.style.transition = 'all 0.3s ease';
+          ornament.style.transform = 'scale(0) rotate(360deg)';
+          setTimeout(() => {
+            ornament.remove();
+            saveOrnaments(); // Save after removal
+          }, 300);
+        });
+
+        treeContainer.appendChild(ornament);
+      }
+
+      treeContainer.addEventListener('click', function(e) {
+        const rect = treeContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Only add ornaments within tree bounds
+        if (x > 40 && x < 260 && y > 20 && y < 340) {
+          const symbol = ornamentSymbols[ornamentIndex % ornamentSymbols.length];
+          createOrnament(symbol, `${x - 15}px`, `${y - 15}px`);
+          ornamentIndex++;
+          saveOrnaments(); // Save after adding
+        }
+      });
+    }
+  </script>
+</body>
+</html>

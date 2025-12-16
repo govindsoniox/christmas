@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Snowflake Christmas Tree</title>
+  <style>
+    :root {
+      --glow-size: 42px;
+      --glow-speed: 10s;
+      --glow-opacity: 0.8;
+      --page-bg: #081016;
+      --text: #e6f1ff;
+      --muted: #99acc2;
+      --accent: #00e5ff;
+      --accent-2: #ff2b6d;
+      --green: #1e8b2e;
+      --green-dark: #126020;
+      --trunk: #7a4b2e;
+      --star: #ffd857;
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    /* === Animated multicolor border glow, enabled only when .glow-on is set on <body> === */
+    body.glow-on::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      box-shadow:
+        inset 0 0 var(--glow-size) rgba(255, 0, 90, var(--glow-opacity)),
+        inset 0 0 calc(var(--glow-size) * 0.6) rgba(0, 220, 255, var(--glow-opacity)),
+        inset 0 0 calc(var(--glow-size) * 0.35) rgba(120, 255, 0, var(--glow-opacity));
+      animation: hueShift var(--glow-speed) linear infinite;
+      z-index: 9999;
+    }
+
+    @keyframes hueShift {
+      0%   { filter: hue-rotate(0deg)   saturate(120%); }
+      50%  { filter: hue-rotate(180deg) saturate(140%); }
+      100% { filter: hue-rotate(360deg) saturate(120%); }
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 2.5rem auto 5rem;
+      padding: 0 1.25rem;
+      text-align: center;
+    }
+    h1 { margin: 0 0 0.25rem; font-size: clamp(1.6rem, 3vw + 1rem, 2.6rem); }
+    .hint { margin: 0.5rem 0 1.25rem; color: var(--muted); }
+
+    /* === Falling snow === */
+    .snow-container { position: fixed; inset: 0; pointer-events: none; z-index: 5; overflow: hidden; }
+    .flake {
+      position: absolute; top: -10vh; color: #fff; opacity: .9; filter: drop-shadow(0 0 3px rgba(255,255,255,.7));
+      animation-name: fall, sway; animation-iteration-count: infinite; will-change: transform;
+    }
+    @keyframes fall { to { transform: translateY(110vh); } }
+    @keyframes sway { 0%{ transform: translateX(0) } 50%{ transform: translateX(20px) } 100%{ transform: translateX(0) } }
+
+    /* === Tree area === */
+    .tree-wrap { position: relative; margin: 2rem auto 1rem; width: min(640px, 90vw); }
+    svg { width: 100%; height: auto; display: block; }
+    .tree { fill: url(#treeGradient); stroke: #0b3313; stroke-width: 2; }
+    .trunk { fill: var(--trunk); }
+    .star { fill: var(--star); filter: drop-shadow(0 0 6px rgba(255,216,87,.9)); }
+    .ornament { stroke: rgba(255,255,255,.85); stroke-width: 1.2; filter: drop-shadow(0 2px 4px rgba(0,0,0,.35)) drop-shadow(0 0 6px currentColor); }
+
+    .controls { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; margin-top: .75rem; }
+    .btn {
+      border: 0; border-radius: 10px; padding: .6rem .9rem; font-weight: 600; cursor: pointer;
+      color: #0b0f14; background: linear-gradient(135deg, #00ffd5, #ff2b6d);
+      box-shadow: 0 6px 18px rgba(0,0,0,.35), 0 0 12px rgba(255,43,109,.45);
+    }
+    .btn.secondary { color: var(--text); background: #2a2f36; box-shadow: none; }
+    .btn.hidden { display: none; }
+
+    /* Lights toggle button (floating) */
+    .lights-toggle {
+      position: fixed; right: 16px; bottom: 16px; z-index: 10000; border: 0; padding: .8rem 1rem; border-radius: 999px; font-weight: 700; cursor: pointer;
+      color: #081016; background: linear-gradient(135deg, #00ffd5, #ff2b6d);
+      box-shadow: 0 8px 24px rgba(0,0,0,.35), 0 0 18px rgba(255,43,109,.55);
+    }
+    .lights-toggle[aria-pressed="true"] { background: linear-gradient(135deg, #39ff14, #00e5ff); box-shadow: 0 8px 26px rgba(0,0,0,.38), 0 0 22px rgba(0,229,255,.65); }
+
+    /* Subtle helper (secret restore). Hidden visually but keeps layout minimal */
+    .restore-tip { position: fixed; left: 8px; bottom: 8px; font-size: 12px; color: rgba(230,241,255,.25); user-select: none; }
+  </style>
+</head>
+<body>
+  <!-- Falling snow layer -->
+  <div class="snow-container" id="snow"></div>
+
+  <div class="wrap">
+    <h1>Snowflake Christmas Tree</h1>
+    <p class="hint">🎄 Click on the tree to add ornaments! They'll be saved. Type the secret word to bring it back if you ever hide it. 🎄</p>
+
+    <div class="tree-wrap" id="treeWrap">
+      <!-- SVG Christmas tree -->
+      <svg id="treeSvg" viewBox="0 0 600 700" role="img" aria-label="Christmas tree, click to add ornaments">
+        <defs>
+          <linearGradient id="treeGradient" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#1fbf3a"/>
+            <stop offset="100%" stop-color="#127a24"/>
+          </linearGradient>
+        </defs>
+        <!-- Star -->
+        <polygon class="star" points="300,40 318,82 364,86 330,114 340,158 300,134 260,158 270,114 236,86 282,82" />
+        <!-- Tree (three tiers) -->
+        <polygon class="tree" points="300,80 430,230 170,230" />
+        <polygon class="tree" points="300,180 470,360 130,360" />
+        <polygon class="tree" points="300,300 520,520 80,520" />
+        <!-- Trunk -->
+        <rect class="trunk" x="270" y="520" width="60" height="90" rx="8" />
+        <!-- Ornament layer -->
+        <g id="ornaments"></g>
+      </svg>
+
+      <div class="controls">
+        <button id="hideBtn" class="btn secondary">❌ Hide Tree Forever</button>
+        <button id="showBtn" class="btn hidden">🎄 Show Christmas Tree</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Border lights toggle -->
+  <button id="lightsBtn" class="lights-toggle" aria-pressed="false" aria-label="Switch border lights on">💡 Switch Lights On</button>
+
+  <div class="restore-tip" aria-hidden="true">psst… (secret)</div>
+
+  <script>
+  (function(){
+    const LS_LIGHTS = 'borderLights';       // 'on' | 'off'
+    const LS_ORNAMENTS = 'treeOrnaments';   // JSON array
+    const LS_TREE_HIDDEN = 'treeHidden';    // '1' | null
+    const SECRET_WORD = 'christmas';        // type to restore hidden tree
+
+    const body = document.body;
+    const lightsBtn = document.getElementById('lightsBtn');
+    const snow = document.getElementById('snow');
+    const treeSvg = document.getElementById('treeSvg');
+    const ornamentsLayer = document.getElementById('ornaments');
+    const treeWrap = document.getElementById('treeWrap');
+    const hideBtn = document.getElementById('hideBtn');
+    const showBtn = document.getElementById('showBtn');
+
+    /* ===== Border lights: default OFF; persist state once user toggles ===== */
+    function applyLightsState(state){
+      const on = state === 'on';
+      body.classList.toggle('glow-on', on);
+      lightsBtn.setAttribute('aria-pressed', String(on));
+      lightsBtn.textContent = on ? '💡 Switch Lights Off' : '💡 Switch Lights On';
+      lightsBtn.setAttribute('aria-label', on ? 'Switch border lights off' : 'Switch border lights on');
+    }
+    // Initialize from storage (default off)
+    applyLightsState(localStorage.getItem(LS_LIGHTS) || 'off');
+    // Toggle & persist
+    lightsBtn.addEventListener('click', () => {
+      const current = localStorage.getItem(LS_LIGHTS) || 'off';
+      const next = current === 'on' ? 'off' : 'on';
+      localStorage.setItem(LS_LIGHTS, next); // persist either way; default off if key absent
+      applyLightsState(next);
+    });
+
+    /* ===== Snow generator ===== */
+    function makeSnowflakes(count){
+      snow.innerHTML = '';
+      const vw = Math.max(1, window.innerWidth);
+      for(let i=0;i<count;i++){
+        const e = document.createElement('div');
+        e.className = 'flake';
+        e.textContent = '❅';
+        const size = 10 + Math.random()*14; // px
+        const left = Math.random() * vw;
+        const delay = Math.random() * 8; // s
+        const fallDur = 8 + Math.random() * 10; // s
+        const swayDur = 3 + Math.random() * 4; // s
+        e.style.left = left + 'px';
+        e.style.fontSize = size + 'px';
+        e.style.animationDuration = fallDur+'s, '+swayDur+'s';
+        e.style.animationDelay = delay+'s, '+(delay/2)+'s';
+        snow.appendChild(e);
+      }
+    }
+    makeSnowflakes(80);
+    window.addEventListener('resize', () => makeSnowflakes(80));
+
+    /* ===== Tree ornaments ===== */
+    function loadOrnaments(){
+      try{ return JSON.parse(localStorage.getItem(LS_ORNAMENTS) || '[]'); }catch(e){ return []; }
+    }
+    function saveOrnaments(list){ localStorage.setItem(LS_ORNAMENTS, JSON.stringify(list)); }
+
+    function renderOrnaments(list){
+      ornamentsLayer.innerHTML = '';
+      list.forEach(o => {
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', o.x);
+        c.setAttribute('cy', o.y);
+        c.setAttribute('r', o.r);
+        c.setAttribute('fill', o.color);
+        c.setAttribute('class', 'ornament');
+        ornamentsLayer.appendChild(c);
+      });
+    }
+
+    let ornaments = loadOrnaments();
+    renderOrnaments(ornaments);
+
+    // Utility: check if point is inside the tree area (within polygons)
+    function pointInPolygons(x, y){
+      const polys = treeSvg.querySelectorAll('.tree');
+      for(const p of polys){
+        if(p.isPointInFill){
+          const pt = treeSvg.createSVGPoint();
+          pt.x = x; pt.y = y;
+          if(p.isPointInFill(pt)) return true;
+        }
+      }
+      return false;
+    }
+
+    // Click to add ornament
+    treeSvg.addEventListener('click', (ev) => {
+      const rect = treeSvg.getBoundingClientRect();
+      const x = (ev.clientX - rect.left) * (600 / rect.width);
+      const y = (ev.clientY - rect.top) * (700 / rect.height);
+      if(!pointInPolygons(x,y)) return; // only on tree
+      const r = 8 + Math.random()*8;
+      const palette = ['#ff3b3b','#ffd93b','#40c4ff','#7cff6b','#ff7af6','#ff9f40','#b388ff'];
+      const color = palette[Math.floor(Math.random()*palette.length)];
+      const o = {x: Math.round(x*100)/100, y: Math.round(y*100)/100, r: Math.round(r*10)/10, color};
+      ornaments.push(o);
+      saveOrnaments(ornaments);
+      renderOrnaments(ornaments);
+    });
+
+    /* ===== Hide / Show tree ===== */
+    function applyTreeHidden(hidden){
+      treeWrap.style.display = hidden ? 'none' : '';
+      showBtn.classList.toggle('hidden', !hidden);
+    }
+    // Initialize from storage
+    applyTreeHidden(localStorage.getItem(LS_TREE_HIDDEN) === '1');
+
+    hideBtn.addEventListener('click', () => {
+      localStorage.setItem(LS_TREE_HIDDEN, '1');
+      applyTreeHidden(true);
+    });
+    showBtn.addEventListener('click', () => {
+      localStorage.removeItem(LS_TREE_HIDDEN);
+      applyTreeHidden(false);
+    });
+
+    // Secret word listener (type anywhere: "christmas")
+    let buffer = '';
+    window.addEventListener('keydown', (e) => {
+      // Ignore if focused in input fields
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      if(['INPUT','TEXTAREA'].includes(tag)) return;
+      // Append letter
+      if(e.key && e.key.length === 1){ buffer += e.key.toLowerCase(); }
+      // Trim buffer length
+      if(buffer.length > SECRET_WORD.length) buffer = buffer.slice(-SECRET_WORD.length);
+      // Match
+      if(buffer.includes(SECRET_WORD)){
+        localStorage.removeItem(LS_TREE_HIDDEN);
+        applyTreeHidden(false);
+        buffer = '';
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

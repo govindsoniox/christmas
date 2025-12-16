@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snowflake Christmas Tree</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #0a1128 0%, #1a2940 100%);
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Falling snowflakes */
+    .snowflake {
+      color: #fff;
+      font-size: 1.5em;
+      font-family: Arial, sans-serif;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+      position: fixed;
+      top: -10%;
+      z-index: 9999;
+      user-select: none;
+      cursor: default;
+      pointer-events: none;
+      animation-name: snowflakes-shake;
+      animation-duration: 3s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-play-state: running;
+    }
+
+    .snowflake .inner {
+      animation-duration: 10s;
+      animation-name: snowflakes-fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-play-state: running;
+    }
+
+    @keyframes snowflakes-fall {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(110vh);
+      }
+    }
+
+    @keyframes snowflakes-shake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(80px);
+      }
+    }
+
+    /* Tree container */
+    .tree-container {
+      position: fixed;
+      bottom: 20px;
+      right: 50px;
+      width: 300px;
+      height: 400px;
+      pointer-events: none;
+      z-index: 10000;
+    }
+
+    /* Tree snowflakes that form the tree */
+    .tree-flake {
+      position: absolute;
+      color: #4ade80;
+      font-size: 2em;
+      text-shadow: 0 0 10px rgba(74, 222, 128, 0.8);
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in forwards;
+    }
+
+    .tree-flake.white {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    .tree-flake.gold {
+      color: #ffd700;
+      font-size: 2.5em;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+    }
+
+    .tree-flake.red {
+      color: #ef4444;
+      text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Star at the top */
+    .star {
+      color: #ffd700;
+      font-size: 3em;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 1);
+      animation: starTwinkle 2s ease-in-out infinite;
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 0.8;
+      }
+    }
+
+    /* Trunk */
+    .trunk {
+      color: #8b4513;
+      font-size: 2em;
+      text-shadow: 0 0 5px rgba(139, 69, 19, 0.8);
+    }
+
+    /* Snowflake positioning variants */
+    .snowflake:nth-of-type(1) { left: 10%; animation-delay: 0s; }
+    .snowflake:nth-of-type(1) .inner { animation-delay: 0s; }
+    .snowflake:nth-of-type(2) { left: 20%; animation-delay: 1s; }
+    .snowflake:nth-of-type(2) .inner { animation-delay: 1s; }
+    .snowflake:nth-of-type(3) { left: 30%; animation-delay: 2s; }
+    .snowflake:nth-of-type(3) .inner { animation-delay: 2s; }
+    .snowflake:nth-of-type(4) { left: 40%; animation-delay: 0.5s; }
+    .snowflake:nth-of-type(4) .inner { animation-delay: 3s; }
+    .snowflake:nth-of-type(5) { left: 50%; animation-delay: 1.5s; }
+    .snowflake:nth-of-type(5) .inner { animation-delay: 4s; }
+    .snowflake:nth-of-type(6) { left: 60%; animation-delay: 2.5s; }
+    .snowflake:nth-of-type(6) .inner { animation-delay: 5s; }
+    .snowflake:nth-of-type(7) { left: 70%; animation-delay: 3s; }
+    .snowflake:nth-of-type(7) .inner { animation-delay: 6s; }
+    .snowflake:nth-of-type(8) { left: 80%; animation-delay: 0.8s; }
+    .snowflake:nth-of-type(8) .inner { animation-delay: 7s; }
+    .snowflake:nth-of-type(9) { left: 15%; animation-delay: 1.8s; }
+    .snowflake:nth-of-type(9) .inner { animation-delay: 8s; }
+    .snowflake:nth-of-type(10) { left: 25%; animation-delay: 2.2s; }
+    .snowflake:nth-of-type(10) .inner { animation-delay: 9s; }
+    .snowflake:nth-of-type(11) { left: 65%; animation-delay: 0.3s; }
+    .snowflake:nth-of-type(11) .inner { animation-delay: 2.5s; }
+    .snowflake:nth-of-type(12) { left: 85%; animation-delay: 1.2s; }
+    .snowflake:nth-of-type(12) .inner { animation-delay: 3.5s; }
+  </style>
+</head>
+<body>
+  <!-- Falling snowflakes -->
+  <div class="snowflakes" aria-hidden="true">
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+  </div>
+
+  <!-- Tree container -->
+  <div class="tree-container" id="treeContainer"></div>
+
+  <script>
+    // Tree structure - each row has positions and colors
+    const treeStructure = [
+      // Star
+      { row: 0, positions: [{ x: 150, char: '★', class: 'star gold' }] },
+      
+      // Top of tree
+      { row: 1, positions: [{ x: 140, char: '❅', class: '' }, { x: 160, char: '❅', class: 'white' }] },
+      { row: 2, positions: [{ x: 130, char: '❅', class: 'white' }, { x: 150, char: '❅', class: 'red' }, { x: 170, char: '❅', class: '' }] },
+      { row: 3, positions: [{ x: 120, char: '❅', class: '' }, { x: 140, char: '❅', class: 'white' }, { x: 160, char: '❅', class: '' }, { x: 180, char: '❅', class: 'red' }] },
+      
+      // Middle of tree
+      { row: 4, positions: [{ x: 110, char: '❅', class: 'red' }, { x: 130, char: '❅', class: '' }, { x: 150, char: '❅', class: 'white' }, { x: 170, char: '❅', class: '' }, { x: 190, char: '❅', class: 'white' }] },
+      { row: 5, positions: [{ x: 100, char: '❅', class: 'white' }, { x: 120, char: '❅', class: '' }, { x: 140, char: '❅', class: 'red' }, { x: 160, char: '❅', class: '' }, { x: 180, char: '❅', class: 'white' }, { x: 200, char: '❅', class: '' }] },
+      { row: 6, positions: [{ x: 90, char: '❅', class: '' }, { x: 110, char: '❅', class: 'white' }, { x: 130, char: '❅', class: '' }, { x: 150, char: '❅', class: 'red' }, { x: 170, char: '❅', class: '' }, { x: 190, char: '❅', class: 'white' }, { x: 210, char: '❅', class: '' }] },
+      { row: 7, positions: [{ x: 80, char: '❅', class: 'red' }, { x: 100, char: '❅', class: '' }, { x: 120, char: '❅', class: 'white' }, { x: 140, char: '❅', class: '' }, { x: 160, char: '❅', class: 'white' }, { x: 180, char: '❅', class: '' }, { x: 200, char: '❅', class: 'red' }, { x: 220, char: '❅', class: '' }] },
+      
+      // Bottom of tree
+      { row: 8, positions: [{ x: 70, char: '❅', class: '' }, { x: 90, char: '❅', class: 'white' }, { x: 110, char: '❅', class: '' }, { x: 130, char: '❅', class: 'red' }, { x: 150, char: '❅', class: '' }, { x: 170, char: '❅', class: 'white' }, { x: 190, char: '❅', class: '' }, { x: 210, char: '❅', class: 'red' }, { x: 230, char: '❅', class: '' }] },
+      { row: 9, positions: [{ x: 60, char: '❅', class: 'white' }, { x: 80, char: '❅', class: '' }, { x: 100, char: '❅', class: 'red' }, { x: 120, char: '❅', class: '' }, { x: 140, char: '❅', class: 'white' }, { x: 160, char: '❅', class: '' }, { x: 180, char: '❅', class: 'red' }, { x: 200, char: '❅', class: '' }, { x: 220, char: '❅', class: 'white' }, { x: 240, char: '❅', class: '' }] },
+      
+      // Trunk
+      { row: 10, positions: [{ x: 140, char: '█', class: 'trunk' }, { x: 160, char: '█', class: 'trunk' }] },
+      { row: 11, positions: [{ x: 140, char: '█', class: 'trunk' }, { x: 160, char: '█', class: 'trunk' }] },
+      { row: 12, positions: [{ x: 140, char: '█', class: 'trunk' }, { x: 160, char: '█', class: 'trunk' }] }
+    ];
+
+    const treeContainer = document.getElementById('treeContainer');
+    let currentRow = 0;
+    let currentPosInRow = 0;
+
+    function addNextSnowflake() {
+      if (currentRow >= treeStructure.length) {
+        return; // Tree is complete
+      }
+
+      const row = treeStructure[currentRow];
+      if (currentPosInRow >= row.positions.length) {
+        // Move to next row
+        currentRow++;
+        currentPosInRow = 0;
+        
+        if (currentRow >= treeStructure.length) {
+          return; // Tree is complete
+        }
+        
+        // Slight delay before starting next row
+        setTimeout(addNextSnowflake, 150);
+        return;
+      }
+
+      const position = row.positions[currentPosInRow];
+      const flake = document.createElement('div');
+      flake.className = `tree-flake ${position.class}`;
+      flake.textContent = position.char;
+      flake.style.left = `${position.x}px`;
+      flake.style.top = `${currentRow * 30}px`;
+      flake.style.animationDelay = '0s';
+      
+      treeContainer.appendChild(flake);
+      
+      currentPosInRow++;
+      
+      // Add next snowflake after a short delay
+      setTimeout(addNextSnowflake, 100);
+    }
+
+    // Start building the tree after a short delay
+    setTimeout(addNextSnowflake, 1000);
+  </script>
+</body>
+</html>
