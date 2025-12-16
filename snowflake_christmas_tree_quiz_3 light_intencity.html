@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snowflake Christmas Tree Quiz</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      position: relative;
+    }
+
+    /* Light Level: LOW - Subtle glow */
+    body.lights-low {
+      box-shadow: 
+        inset 0 0 60px 20px rgba(220, 38, 38, 0.3),
+        inset 0 0 120px 35px rgba(34, 197, 94, 0.25),
+        inset 0 0 180px 50px rgba(255, 255, 255, 0.2);
+      animation: backgroundPulseLow 5s ease-in-out infinite;
+    }
+
+    /* Light Level: MEDIUM - Moderate glow */
+    body.lights-medium {
+      box-shadow: 
+        inset 0 0 120px 40px rgba(220, 38, 38, 0.5),
+        inset 0 0 240px 70px rgba(34, 197, 94, 0.4),
+        inset 0 0 360px 100px rgba(255, 255, 255, 0.35),
+        inset 0 0 480px 130px rgba(59, 130, 246, 0.25);
+      animation: backgroundPulseMedium 4s ease-in-out infinite;
+    }
+
+    /* Light Level: HIGH - Maximum festive glow */
+    body.lights-high {
+      box-shadow: 
+        inset 0 0 150px 50px rgba(220, 38, 38, 0.7),
+        inset 0 0 300px 90px rgba(34, 197, 94, 0.6),
+        inset 0 0 450px 120px rgba(255, 255, 255, 0.5),
+        inset 0 0 600px 150px rgba(59, 130, 246, 0.4),
+        inset 0 0 750px 180px rgba(255, 215, 0, 0.3);
+      animation: backgroundPulseHigh 3s ease-in-out infinite;
+    }
+
+    /* Background pulsing animations */
+    @keyframes backgroundPulseLow {
+      0%, 100% {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a3e 100%);
+      }
+      50% {
+        background: linear-gradient(135deg, #1c1a2e 0%, #18213e 50%, #1c1a3e 100%);
+      }
+    }
+
+    @keyframes backgroundPulseMedium {
+      0%, 100% {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a3e 100%);
+      }
+      25% {
+        background: linear-gradient(135deg, #1f1a2e 0%, #1a213e 50%, #1f1a3e 100%);
+      }
+      50% {
+        background: linear-gradient(135deg, #1a1f2e 0%, #16253e 50%, #1a1f3e 100%);
+      }
+      75% {
+        background: linear-gradient(135deg, #1a1a32 0%, #1a213e 50%, #1a1a3e 100%);
+      }
+    }
+
+    @keyframes backgroundPulseHigh {
+      0%, 100% {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a3e 100%);
+      }
+      20% {
+        background: linear-gradient(135deg, #201a2e 0%, #1c213e 50%, #201a3e 100%);
+      }
+      40% {
+        background: linear-gradient(135deg, #1a202e 0%, #16273e 50%, #1a203e 100%);
+      }
+      60% {
+        background: linear-gradient(135deg, #1a1a35 0%, #1a213e 50%, #1a1a45 100%);
+      }
+      80% {
+        background: linear-gradient(135deg, #1e1a2e 0%, #1a253e 50%, #1e1a3e 100%);
+      }
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      border: 12px solid transparent;
+      z-index: 9998;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Border styles for LOW lights */
+    body.lights-low::before {
+      border-image: linear-gradient(
+        90deg,
+        rgba(220, 38, 38, 0.5) 0%,
+        rgba(34, 197, 94, 0.5) 25%,
+        rgba(59, 130, 246, 0.5) 50%,
+        rgba(255, 255, 255, 0.5) 75%,
+        rgba(220, 38, 38, 0.5) 100%
+      ) 1;
+      box-shadow: 
+        inset 0 0 25px rgba(220, 38, 38, 0.3),
+        inset 0 0 25px rgba(34, 197, 94, 0.3),
+        inset 0 0 25px rgba(59, 130, 246, 0.2);
+      opacity: 1;
+      animation: borderGlowLow 4s ease-in-out infinite, borderRotate 10s linear infinite;
+    }
+
+    /* Border styles for MEDIUM lights */
+    body.lights-medium::before {
+      border-image: linear-gradient(
+        90deg,
+        rgba(220, 38, 38, 0.7) 0%,
+        rgba(34, 197, 94, 0.7) 25%,
+        rgba(59, 130, 246, 0.7) 50%,
+        rgba(255, 255, 255, 0.7) 75%,
+        rgba(220, 38, 38, 0.7) 100%
+      ) 1;
+      box-shadow: 
+        inset 0 0 40px rgba(220, 38, 38, 0.5),
+        inset 0 0 40px rgba(34, 197, 94, 0.5),
+        inset 0 0 40px rgba(59, 130, 246, 0.4);
+      opacity: 1;
+      animation: borderGlowMedium 3s ease-in-out infinite, borderRotate 8s linear infinite;
+    }
+
+    /* Border styles for HIGH lights */
+    body.lights-high::before {
+      border-image: linear-gradient(
+        90deg,
+        rgba(220, 38, 38, 0.9) 0%,
+        rgba(34, 197, 94, 0.9) 20%,
+        rgba(59, 130, 246, 0.9) 40%,
+        rgba(255, 255, 255, 0.9) 60%,
+        rgba(255, 215, 0, 0.9) 80%,
+        rgba(220, 38, 38, 0.9) 100%
+      ) 1;
+      box-shadow: 
+        inset 0 0 60px rgba(220, 38, 38, 0.7),
+        inset 0 0 60px rgba(34, 197, 94, 0.7),
+        inset 0 0 60px rgba(59, 130, 246, 0.6),
+        inset 0 0 60px rgba(255, 255, 255, 0.5);
+      opacity: 1;
+      animation: borderGlowHigh 2s ease-in-out infinite, borderRotate 6s linear infinite;
+    }
+
+    @keyframes borderGlowLow {
+      0%, 100% {
+        filter: brightness(1) blur(1px);
+        opacity: 0.7;
+      }
+      50% {
+        filter: brightness(1.2) blur(2px);
+        opacity: 0.85;
+      }
+    }
+
+    @keyframes borderGlowMedium {
+      0%, 100% {
+        filter: brightness(1.2) blur(3px);
+        opacity: 0.9;
+      }
+      25% {
+        filter: brightness(1.6) blur(5px);
+        opacity: 1;
+      }
+      50% {
+        filter: brightness(1) blur(2px);
+        opacity: 0.8;
+      }
+      75% {
+        filter: brightness(1.5) blur(4px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes borderGlowHigh {
+      0%, 100% {
+        filter: brightness(1.4) blur(4px);
+        opacity: 1;
+      }
+      20% {
+        filter: brightness(1.8) blur(6px);
+        opacity: 1;
+      }
+      40% {
+        filter: brightness(1.2) blur(3px);
+        opacity: 0.9;
+      }
+      60% {
+        filter: brightness(1.7) blur(5px);
+        opacity: 1;
+      }
+      80% {
+        filter: brightness(1.5) blur(4px);
+        opacity: 1;
+      }
+    }
+
+    @keyframes borderRotate {
+      0% {
+        border-image: linear-gradient(
+          90deg,
+          rgba(220, 38, 38, 0.8) 0%,
+          rgba(34, 197, 94, 0.8) 25%,
+          rgba(59, 130, 246, 0.8) 50%,
+          rgba(255, 255, 255, 0.8) 75%,
+          rgba(220, 38, 38, 0.8) 100%
+        ) 1;
+      }
+      33% {
+        border-image: linear-gradient(
+          90deg,
+          rgba(34, 197, 94, 0.8) 0%,
+          rgba(59, 130, 246, 0.8) 25%,
+          rgba(255, 255, 255, 0.8) 50%,
+          rgba(220, 38, 38, 0.8) 75%,
+          rgba(34, 197, 94, 0.8) 100%
+        ) 1;
+      }
+      66% {
+        border-image: linear-gradient(
+          90deg,
+          rgba(59, 130, 246, 0.8) 0%,
+          rgba(255, 255, 255, 0.8) 25%,
+          rgba(220, 38, 38, 0.8) 50%,
+          rgba(34, 197, 94, 0.8) 75%,
+          rgba(59, 130, 246, 0.8) 100%
+        ) 1;
+      }
+      100% {
+        border-image: linear-gradient(
+          90deg,
+          rgba(220, 38, 38, 0.8) 0%,
+          rgba(34, 197, 94, 0.8) 25%,
+          rgba(59, 130, 246, 0.8) 50%,
+          rgba(255, 255, 255, 0.8) 75%,
+          rgba(220, 38, 38, 0.8) 100%
+        ) 1;
+      }
+    }
+
+    /* Hidden state for border when tree is hidden */
+    body.border-hidden::before {
+      display: none;
+    }
+
+    body.border-hidden {
+      box-shadow: none;
+    }
+
+    /* Falling snowflakes */
+    .snowflake {
+      color: #fff;
+      font-size: 1.5em;
+      font-family: Arial, sans-serif;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+      position: fixed;
+      top: -10%;
+      z-index: 9999;
+      user-select: none;
+      cursor: default;
+      pointer-events: none;
+      animation-name: snowflakes-shake;
+      animation-duration: 3s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-play-state: running;
+    }
+
+    .snowflake .inner {
+      animation-duration: 10s;
+      animation-name: snowflakes-fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-play-state: running;
+    }
+
+    @keyframes snowflakes-fall {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(110vh);
+      }
+    }
+
+    @keyframes snowflakes-shake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(80px);
+      }
+    }
+
+    /* Tree container */
+    .tree-container {
+      position: fixed;
+      bottom: 20px;
+      right: 50px;
+      width: 300px;
+      height: 400px;
+      z-index: 10000;
+    }
+
+    /* Tree snowflakes that form the tree */
+    .tree-flake {
+      position: absolute;
+      color: #22c55e;
+      font-size: 2em;
+      text-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in forwards;
+      pointer-events: none;
+      font-weight: bold;
+    }
+
+    .tree-flake.dark-green {
+      color: #16a34a;
+      text-shadow: 0 0 8px rgba(22, 163, 74, 0.6);
+    }
+
+    .tree-flake.light-green {
+      color: #4ade80;
+      text-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+    }
+
+    .tree-flake.white {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    .tree-flake.gold {
+      color: #ffd700;
+      font-size: 2.5em;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+    }
+
+    .tree-flake.red {
+      color: #ef4444;
+      text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+      background: transparent;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Interactive ornaments */
+    .ornament {
+      position: absolute;
+      font-size: 1.8em;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      pointer-events: auto;
+    }
+
+    .ornament:hover {
+      transform: scale(1.3);
+    }
+
+    /* Ornaments get swing animation */
+    .ornament {
+      animation: swing 2s ease-in-out infinite;
+    }
+
+    /* When lights are on, add glow to ornaments based on level */
+    body.lights-low .ornament {
+      animation: swing 2s ease-in-out infinite, christmasGlowLow 3s ease-in-out infinite;
+    }
+
+    body.lights-medium .ornament {
+      animation: swing 2s ease-in-out infinite, christmasGlowMedium 2.5s ease-in-out infinite;
+    }
+
+    body.lights-high .ornament {
+      animation: swing 2s ease-in-out infinite, christmasGlowHigh 2s ease-in-out infinite;
+    }
+
+    @keyframes swing {
+      0%, 100% {
+        transform: rotate(-5deg);
+      }
+      50% {
+        transform: rotate(5deg);
+      }
+    }
+
+    /* LOW level - Subtle ornament glow */
+    @keyframes christmasGlowLow {
+      0% {
+        filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.5)) drop-shadow(0 0 8px rgba(34, 197, 94, 0.3));
+      }
+      33% {
+        filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.5)) drop-shadow(0 0 8px rgba(59, 130, 246, 0.3));
+      }
+      66% {
+        filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.5)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+      }
+      100% {
+        filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.5)) drop-shadow(0 0 8px rgba(34, 197, 94, 0.3));
+      }
+    }
+
+    /* MEDIUM level - Moderate ornament glow */
+    @keyframes christmasGlowMedium {
+      0% {
+        filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)) drop-shadow(0 0 15px rgba(34, 197, 94, 0.5));
+      }
+      25% {
+        filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.8)) drop-shadow(0 0 15px rgba(59, 130, 246, 0.5));
+      }
+      50% {
+        filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+      }
+      75% {
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(239, 68, 68, 0.5));
+      }
+      100% {
+        filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)) drop-shadow(0 0 15px rgba(34, 197, 94, 0.5));
+      }
+    }
+
+    /* HIGH level - Maximum ornament glow */
+    @keyframes christmasGlowHigh {
+      0% {
+        filter: drop-shadow(0 0 12px rgba(239, 68, 68, 1)) drop-shadow(0 0 20px rgba(34, 197, 94, 0.7)) drop-shadow(0 0 30px rgba(239, 68, 68, 0.4));
+      }
+      20% {
+        filter: drop-shadow(0 0 12px rgba(34, 197, 94, 1)) drop-shadow(0 0 20px rgba(59, 130, 246, 0.7)) drop-shadow(0 0 30px rgba(34, 197, 94, 0.4));
+      }
+      40% {
+        filter: drop-shadow(0 0 12px rgba(59, 130, 246, 1)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.7)) drop-shadow(0 0 30px rgba(59, 130, 246, 0.4));
+      }
+      60% {
+        filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.7)) drop-shadow(0 0 30px rgba(255, 255, 255, 0.4));
+      }
+      80% {
+        filter: drop-shadow(0 0 12px rgba(255, 215, 0, 1)) drop-shadow(0 0 20px rgba(239, 68, 68, 0.7)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.4));
+      }
+      100% {
+        filter: drop-shadow(0 0 12px rgba(239, 68, 68, 1)) drop-shadow(0 0 20px rgba(34, 197, 94, 0.7)) drop-shadow(0 0 30px rgba(239, 68, 68, 0.4));
+      }
+    }
+
+    /* Click instruction - Above tree */
+    .instruction {
+      position: fixed;
+      bottom: 450px;
+      right: 50px;
+      color: #fff;
+      font-size: 14px;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px 15px;
+      border-radius: 8px;
+      opacity: 0;
+      animation: fadeInInstruction 1s ease-in forwards;
+      animation-delay: 4s;
+      z-index: 10001;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    body.lights-low .instruction {
+      animation: fadeInInstruction 1s ease-in forwards, christmasGlowLow 4s ease-in-out infinite;
+      animation-delay: 4s;
+    }
+
+    body.lights-medium .instruction {
+      animation: fadeInInstruction 1s ease-in forwards, christmasGlowMedium 3s ease-in-out infinite;
+      animation-delay: 4s;
+    }
+
+    body.lights-high .instruction {
+      animation: fadeInInstruction 1s ease-in forwards, christmasGlowHigh 2.5s ease-in-out infinite;
+      animation-delay: 4s;
+    }
+
+    /* Toggle lights button - Top Right Edge, Stealth */
+    .toggle-lights-btn {
+      position: fixed;
+      top: 20px;
+      right: 0;
+      background: rgba(255, 215, 0, 0.75);
+      color: #1a1a2e;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px 0 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10005;
+      transition: all 0.3s ease;
+      box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
+      border-right: none;
+    }
+
+    .toggle-lights-btn:hover {
+      background: rgba(255, 215, 0, 0.95);
+      transform: translateX(-5px);
+    }
+
+    body.lights-low .toggle-lights-btn {
+      animation: christmasGlowLow 4.5s ease-in-out infinite;
+    }
+
+    body.lights-medium .toggle-lights-btn {
+      animation: christmasGlowMedium 3.5s ease-in-out infinite;
+    }
+
+    body.lights-high .toggle-lights-btn {
+      animation: christmasGlowHigh 2.5s ease-in-out infinite;
+    }
+
+    .toggle-lights-btn.lights-off {
+      background: rgba(100, 100, 100, 0.5);
+      color: #ccc;
+    }
+
+    .toggle-lights-btn.lights-off:hover {
+      background: rgba(120, 120, 120, 0.7);
+    }
+
+    /* Intensity button - Right Edge, Below Lights Button */
+    .intensity-btn {
+      position: fixed;
+      top: 70px;
+      right: 0;
+      background: rgba(255, 215, 0, 0.75);
+      color: #1a1a2e;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px 0 0 8px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10004;
+      transition: all 0.3s ease;
+      box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
+      border-right: none;
+    }
+
+    .intensity-btn:hover {
+      background: rgba(255, 215, 0, 0.95);
+      transform: translateX(-5px);
+    }
+
+    body.lights-low .intensity-btn {
+      animation: christmasGlowLow 4s ease-in-out infinite;
+    }
+
+    body.lights-medium .intensity-btn {
+      animation: christmasGlowMedium 3s ease-in-out infinite;
+    }
+
+    body.lights-high .intensity-btn {
+      animation: christmasGlowHigh 2.5s ease-in-out infinite;
+    }
+
+    /* Hide tree button - Right Edge, Below Intensity Button */
+    .hide-tree-btn {
+      position: fixed;
+      top: 118px;
+      right: 0;
+      background: rgba(220, 38, 38, 0.75);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px 0 0 8px;
+      font-size: 13px;
+      cursor: pointer;
+      z-index: 10002;
+      transition: all 0.3s ease;
+      box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      animation: fadeInInstruction 1s ease-in forwards;
+      animation-delay: 4.5s;
+      border-right: none;
+    }
+
+    .hide-tree-btn:hover {
+      background: rgba(185, 28, 28, 0.9);
+      transform: translateX(-5px);
+    }
+
+    body.lights-low .hide-tree-btn {
+      animation: fadeInInstruction 1s ease-in forwards, christmasGlowLow 4.5s ease-in-out infinite;
+      animation-delay: 4.5s;
+    }
+
+    body.lights-medium .hide-tree-btn {
+      animation: fadeInInstruction 1s ease-in forwards, christmasGlowMedium 3.5s ease-in-out infinite;
+      animation-delay: 4.5s;
+    }
+
+    body.lights-high .hide-tree-btn {
+      animation: fadeInInstruction 1s ease-in forwards, christmasGlowHigh 2.5s ease-in-out infinite;
+      animation-delay: 4.5s;
+    }
+
+    /* Take Quiz button - Right Edge, Below Hide Button */
+    .take-quiz-btn {
+      position: fixed;
+      top: 166px;
+      right: 0;
+      background: rgba(34, 197, 94, 0.75);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px 0 0 8px;
+      font-size: 14px;
+      cursor: pointer;
+      z-index: 10002;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      animation: fadeInInstruction 1s ease-in forwards;
+      animation-delay: 4.2s;
+      border-right: none;
+    }
+
+    .take-quiz-btn:hover {
+      background: rgba(22, 163, 74, 0.95);
+      transform: translateX(-5px);
+    }
+
+    body.lights-low .take-quiz-btn {
+      animation: fadeInInstruction 1s ease-in forwards, christmasGlowLow 4s ease-in-out infinite;
+      animation-delay: 4.2s;
+    }
+
+    body.lights-medium .take-quiz-btn {
+      animation: fadeInInstruction 1s ease-in forwards, christmasGlowMedium 3s ease-in-out infinite;
+      animation-delay: 4.2s;
+    }
+
+    body.lights-high .take-quiz-btn {
+      animation: fadeInInstruction 1s ease-in forwards, christmasGlowHigh 2.5s ease-in-out infinite;
+      animation-delay: 4.2s;
+    }
+
+    /* Secret restore message */
+    .secret-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: #4ade80;
+      padding: 30px 50px;
+      border-radius: 15px;
+      font-size: 24px;
+      text-align: center;
+      z-index: 20000;
+      box-shadow: 0 0 30px rgba(74, 222, 128, 0.5);
+      animation: fadeInInstruction 0.5s ease-in forwards;
+    }
+
+    /* Quiz Modal Styles */
+    .quiz-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 15000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .quiz-content {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 600px;
+      width: 90%;
+      box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
+      border: 3px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .quiz-content h2 {
+      color: #4ade80;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+      text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+    }
+
+    .quiz-question {
+      color: #fff;
+      font-size: 20px;
+      margin-bottom: 25px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-option {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      text-align: left;
+    }
+
+    .quiz-option:hover {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: rgba(34, 197, 94, 0.6);
+      transform: translateX(10px);
+    }
+
+    .quiz-option.correct {
+      background: rgba(34, 197, 94, 0.3);
+      border-color: #22c55e;
+      animation: correctAnswer 0.5s ease;
+    }
+
+    .quiz-option.incorrect {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: #ef4444;
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes correctAnswer {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .quiz-feedback {
+      color: #4ade80;
+      font-size: 18px;
+      text-align: center;
+      margin: 20px 0;
+      min-height: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .close-quiz-btn {
+      background: rgba(220, 38, 38, 0.8);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+      transition: all 0.3s ease;
+    }
+
+    .close-quiz-btn:hover {
+      background: rgba(185, 28, 28, 0.9);
+      transform: scale(1.05);
+    }
+
+    /* Ornament Collection Styles - Compact vertical drawer on right edge */
+    .ornament-collection {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 8px 6px;
+      border-radius: 10px 0 0 10px;
+      border: 2px solid rgba(34, 197, 94, 0.4);
+      border-right: none;
+      z-index: 10001;
+      width: 55px;
+      max-height: 60vh;
+      overflow-y: auto;
+      box-shadow: -3px 0 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .ornament-collection:hover {
+      background: rgba(255, 255, 255, 0.98);
+      transform: translateY(-50%) translateX(-3px);
+    }
+
+    .ornament-collection::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .ornament-collection::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .ornament-collection::-webkit-scrollbar-thumb {
+      background: rgba(34, 197, 94, 0.6);
+      border-radius: 10px;
+    }
+
+    .ornament-collection h3 {
+      color: #16a34a;
+      font-size: 10px;
+      margin: 0 0 10px 0;
+      text-align: center;
+      font-weight: bold;
+      writing-mode: horizontal-tb;
+    }
+
+    .collection-display {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    .collection-ornament {
+      font-size: 28px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      filter: grayscale(0);
+      padding: 3px;
+      border-radius: 6px;
+    }
+
+    .collection-ornament:hover {
+      transform: scale(1.2);
+      background: rgba(34, 197, 94, 0.2);
+    }
+
+    .collection-ornament.locked {
+      filter: grayscale(100%) brightness(0.4);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .collection-ornament.locked:hover {
+      transform: scale(1);
+      background: transparent;
+    }
+
+    /* Hidden state */
+    .tree-hidden {
+      display: none;
+    }
+
+    @keyframes fadeInInstruction {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Star at the top */
+    .star {
+      color: #ffd700;
+      font-size: 3em;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 1);
+      animation: starTwinkle 2s ease-in-out infinite;
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.2) rotate(180deg);
+        opacity: 0.8;
+      }
+    }
+
+    /* Trunk */
+    .trunk {
+      color: #8b4513;
+      font-size: 2em;
+      text-shadow: 0 0 5px rgba(139, 69, 19, 0.8);
+    }
+
+    /* Snowflake positioning variants */
+    .snowflake:nth-of-type(1) { left: 10%; animation-delay: 0s; }
+    .snowflake:nth-of-type(1) .inner { animation-delay: 0s; }
+    .snowflake:nth-of-type(2) { left: 20%; animation-delay: 1s; }
+    .snowflake:nth-of-type(2) .inner { animation-delay: 1s; }
+    .snowflake:nth-of-type(3) { left: 30%; animation-delay: 2s; }
+    .snowflake:nth-of-type(3) .inner { animation-delay: 2s; }
+    .snowflake:nth-of-type(4) { left: 40%; animation-delay: 0.5s; }
+    .snowflake:nth-of-type(4) .inner { animation-delay: 3s; }
+    .snowflake:nth-of-type(5) { left: 50%; animation-delay: 1.5s; }
+    .snowflake:nth-of-type(5) .inner { animation-delay: 4s; }
+    .snowflake:nth-of-type(6) { left: 60%; animation-delay: 2.5s; }
+    .snowflake:nth-of-type(6) .inner { animation-delay: 5s; }
+    .snowflake:nth-of-type(7) { left: 70%; animation-delay: 3s; }
+    .snowflake:nth-of-type(7) .inner { animation-delay: 6s; }
+    .snowflake:nth-of-type(8) { left: 80%; animation-delay: 0.8s; }
+    .snowflake:nth-of-type(8) .inner { animation-delay: 7s; }
+    .snowflake:nth-of-type(9) { left: 15%; animation-delay: 1.8s; }
+    .snowflake:nth-of-type(9) .inner { animation-delay: 8s; }
+    .snowflake:nth-of-type(10) { left: 25%; animation-delay: 2.2s; }
+    .snowflake:nth-of-type(10) .inner { animation-delay: 9s; }
+    .snowflake:nth-of-type(11) { left: 65%; animation-delay: 0.3s; }
+    .snowflake:nth-of-type(11) .inner { animation-delay: 2.5s; }
+    .snowflake:nth-of-type(12) { left: 85%; animation-delay: 1.2s; }
+    .snowflake:nth-of-type(12) .inner { animation-delay: 3.5s; }
+  </style>
+</head>
+<body>
+  <!-- Right Edge Controls: Stacked Vertically, Non-Obtrusive -->
+  <button class="toggle-lights-btn lights-off" id="toggleLightsBtn">💡 Lights: OFF</button>
+  <button class="intensity-btn" id="intensityBtn" style="display: none;">⚡ Low</button>
+  <button class="hide-tree-btn" id="hideTreeBtn">❌ Hide</button>
+  <button class="take-quiz-btn" id="takeQuizBtn">📝 Quiz</button>
+
+  <!-- Ornament Collection: Right Edge Vertical Drawer (Below Buttons) -->
+  <div class="ornament-collection" id="ornamentCollection">
+    <h3>🎁</h3>
+    <div id="collectionDisplay" class="collection-display"></div>
+  </div>
+
+  <!-- Quiz Modal: Center Overlay -->
+  <div id="quizModal" class="quiz-modal" style="display: none;">
+    <div class="quiz-content">
+      <h2>🎄 Answer to Earn Ornaments! 🎄</h2>
+      <div id="quizQuestion" class="quiz-question"></div>
+      <div id="quizOptions" class="quiz-options"></div>
+      <div id="quizFeedback" class="quiz-feedback"></div>
+      <button id="closeQuizBtn" class="close-quiz-btn">Close</button>
+    </div>
+  </div>
+
+  <!-- Background: Falling Snowflakes -->
+  <div class="snowflakes" aria-hidden="true">
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❆</div></div>
+    <div class="snowflake"><div class="inner">❄</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❆</div></div>
+    <div class="snowflake"><div class="inner">❄</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❆</div></div>
+    <div class="snowflake"><div class="inner">❄</div></div>
+    <div class="snowflake"><div class="inner">❅</div></div>
+    <div class="snowflake"><div class="inner">❆</div></div>
+  </div>
+
+  <!-- Main Feature: Christmas Tree (Bottom Right) -->
+  <div class="tree-container" id="treeContainer"></div>
+
+  <!-- Instruction: Above Tree -->
+  <div class="instruction" id="instruction">🎄 Earn ornaments by answering questions! 🎄</div>
+
+  <script>
+    // ============================================================================
+    // QUIZ CONFIGURATION - ADD YOUR QUESTIONS, ANSWERS, AND ORNAMENTS HERE
+    // ============================================================================
+    // HOW TO ADD MORE QUESTIONS:
+    // 1. Copy the template format below
+    // 2. Set your "question" text
+    // 3. Add 4 "options" in the array
+    // 4. Set "correctAnswer" to the index (0-3) of the correct option
+    // 5. Choose an emoji for the "ornament" reward
+    // ============================================================================
+    
+    
+const quizData = [
+  {
+    question: "When was this new REDCap installed?",
+    options: ["Dec 2024", "July 2024", "Feb 2023", "Sep 2025"],
+    correctAnswer: 0,
+    ornament: "🛠️"
+  },
+  {
+    question: "Where can the NMO patients which are not on this REDCap NMO database still be accessed?",
+    options: [
+      "Access Database",
+      "Sophie's Excel sheet",
+      "Jackie's mail box",
+      "Anna's Coffee machine"
+    ],
+    correctAnswer: 0,
+    ornament: "🔗"
+  },
+  {
+    question: "Which database serves as the most reliable and authoritative source of consent information for DRTB (Oxford Tissue Bank) patients?",
+    options: ["This REDCap database", "Old (Petra) databse", "University NMO database", "Trail unit database"],
+    correctAnswer: 3,
+    ornament: "📋"
+  },
+  {
+    question: "What new field was added to Demographics to capture care provider details?",
+    options: ["Local Neurologist", "GP Surgery", "Clinic Location", "Consultant Email"],
+    correctAnswer: 0,
+    ornament: "🏥"
+  },
+  {
+    question: "How do you access more learning resources about REDCap and NMO database?",
+    options: ["Trial and Error", "Community platform", "I accept the fate", "I don't know"],
+    correctAnswer: 1,
+    ornament: "💡️"
+  },
+  {
+    question: "Which term was renamed to 'Encephalitis' under Classification?",
+    options: ["Cortical Encephalitis", "Autoimmune Encephalitis", "Myelitis", "CRION"],
+    correctAnswer: 0,
+    ornament: "✍️"
+  },
+  {
+    question: "Which two items moved to separate forms from Clinic Appointment?",
+    options: ["EDSS & VA", "BMI and Measurements", "MRI Brain & MRI Spine", "VEP & SSEP"],
+    correctAnswer: 1,
+    ornament: "📄"
+  },
+  {
+    question: "How to request new user addition on REDCap?",
+    options: ["Shoot a mail to Database manager", "Ask someone to figure out", "use https://redcap.link/OUHrequest", "Ask Jackie"],
+    correctAnswer: 2,
+    ornament: "📍"
+  },
+  {
+    question: "I live in Access but not in REDCap, I'm counted but not a gap, more than three hundred, less than five—guess my number and keep hope alive! We recently discovered that some patients are recorded in the Access database but not in REDCap. Can you guess how many?",
+    options: ["189", "289", "389", "489"],
+    correctAnswer: 2,
+    ornament: "🔒"
+  },
+  {
+    question: "Which instrument is fully interactive now whereas it was freetext earlier?",
+    options: ["HADS scoring", "EQ-5D-5L", "MFIS index", "Brief Pain Inventory"],
+    correctAnswer: 3,
+    ornament: "📈"
+  },
+  {
+    question: "What new instrument was introduced to help clinicians see all information about patients in one place?",
+    options: ["Clinic form", "Clinic Summary", "Clinic Coffee", "Clinic Appointment"],
+    correctAnswer: 1,
+    ornament: "📝"
+  },
+  {
+    question: "If status_v2 is marked 'RIP', what age value is set?",
+    options: ["0", "NA", "999", "Age at last clinic"],
+    correctAnswer: 2,
+    ornament: "🕊️"
+  },
+  {
+    question: "Which validation to unique identifiers was added for patient identifiers in May/June 2025?",
+    options: ["NHS number validation", "Hospital Number checksum", "NINO validation", "Passport check"],
+    correctAnswer: 0,
+    ornament: "✅"
+  },
+  {
+    question: "What change was made to reduce confusion in the Relapse/Attack instrument wording?",
+    options: ["Relapse -> Attack where appropriate", "Relapse -> Episode", "Attack -> Relapse", "Episode -> Relapse"],
+    correctAnswer: 0,
+    ornament: "♻️"
+  },
+  {
+    question: "Which variable captures the date of the first attack marked as 'definite'?",
+    options: ["first_attack", "first_definite_attack", "date_of_onset", "attack_doa"],
+    correctAnswer: 1,
+    ornament: "🎯"
+  },
+  {
+    question: "Which new calculation was added for records with a death date?",
+    options: ["Age today", "Age at diagnosis", "Age at date of death", "Years since onset"],
+    correctAnswer: 2,
+    ornament: "📐"
+  },
+  {
+    question: "What administrative segmentation of UK residency was introduced?",
+    options: ["Regions", "E, S, W, NI and Channel Islands", "Counties", "LSOA only"],
+    correctAnswer: 1,
+    ornament: "🗺️"
+  },
+  {
+    question: "Which instrument was added on request from Yvonne in June 2025?",
+    options: ["MDT form", "Pregnancy Details", "Data Review", "Serious Adverse Event"],
+    correctAnswer: 0,
+    ornament: "👥"
+  },
+  {
+    question: "In clinical summary outputs, how is 'NMOSD AQP4+' expanded?",
+    options: [
+      "Neuromyelitis optica spectrum disorder associated with AQP4 antibodies",
+      "Aquaporin-4 antibody-negative Neuromyelitis optica",
+      "MOG antibody associated disease",
+      "Multiple Sclerosis"
+    ],
+    correctAnswer: 0,
+    ornament: "🔬"
+  },
+  {
+    question: "Which variable name should you use for the status of patient?",
+    options: [
+      "status",
+      "status_v2",
+      "clinic",
+      "patient_status_"
+    ],
+    correctAnswer: 1,
+    ornament: "📜"
+  },
+  { question: "I'm the mystery number—62 patients seen at least once in clinic, yet missing something important. What is missing?",
+    options: ["Appointment date", "Consent", "Patients without Diagnosis", "Contact details"],
+    correctAnswer: 2,
+    ornament: "❓"
+  },
+  { question: "Buzzlet, our tiny hummingbird, wants to reach the flower of complete, clean, and timely data. What can YOU do to help Buzzlet get there?",
+    options: ["Ignore missing fields", "Review, correct, and complete records", "Add more gaps", "Delay updates"],
+    correctAnswer: 1,
+    ornament: "🐣"
+  }
+];
+
+    
+    
+    
+    // ============================================================================
+
+    // Quiz state management
+    let unlockedOrnaments = JSON.parse(localStorage.getItem('unlockedOrnaments') || '[]');
+    let currentQuestionIndex = 0;
+    let availableQuestions = [];
+
+    // Initialize quiz system
+    function initializeQuiz() {
+      // Find questions that haven't been answered correctly yet
+      availableQuestions = quizData.filter((q, index) => !unlockedOrnaments.includes(q.ornament));
+      updateOrnamentCollection();
+    }
+
+    // Show quiz modal
+    function showQuiz() {
+      if (availableQuestions.length === 0) {
+        alert("🎉 Congratulations! You've unlocked all ornaments! 🎉");
+        return;
+      }
+
+      // Pick a random unanswered question
+      currentQuestionIndex = Math.floor(Math.random() * availableQuestions.length);
+      const question = availableQuestions[currentQuestionIndex];
+
+      document.getElementById('quizQuestion').textContent = question.question;
+      
+      const optionsContainer = document.getElementById('quizOptions');
+      optionsContainer.innerHTML = '';
+      
+      question.options.forEach((option, index) => {
+        const optionBtn = document.createElement('button');
+        optionBtn.className = 'quiz-option';
+        optionBtn.textContent = option;
+        optionBtn.onclick = () => checkAnswer(index, question);
+        optionsContainer.appendChild(optionBtn);
+      });
+
+      document.getElementById('quizFeedback').innerHTML = '';
+      document.getElementById('quizModal').style.display = 'flex';
+    }
+
+    // Check answer
+    function checkAnswer(selectedIndex, question) {
+      const options = document.querySelectorAll('.quiz-option');
+      const feedback = document.getElementById('quizFeedback');
+
+      // Disable all options after selection
+      options.forEach(opt => opt.style.pointerEvents = 'none');
+
+      if (selectedIndex === question.correctAnswer) {
+        options[selectedIndex].classList.add('correct');
+        
+        // Unlock ornament
+        if (!unlockedOrnaments.includes(question.ornament)) {
+          unlockedOrnaments.push(question.ornament);
+          localStorage.setItem('unlockedOrnaments', JSON.stringify(unlockedOrnaments));
+        }
+
+        feedback.innerHTML = `
+          <div style="color: #4ade80; font-size: 24px;">✅ Correct!</div>
+          <div style="font-size: 40px; animation: starTwinkle 1s ease-in-out infinite;">${question.ornament}</div>
+          <div style="color: #fff;">You've unlocked a new ornament!</div>
+        `;
+
+        // Update available questions and collection
+        availableQuestions = quizData.filter((q) => !unlockedOrnaments.includes(q.ornament));
+        updateOrnamentCollection();
+
+        // Auto-close after showing success
+        setTimeout(() => {
+          document.getElementById('quizModal').style.display = 'none';
+        }, 3000);
+      } else {
+        options[selectedIndex].classList.add('incorrect');
+        options[question.correctAnswer].classList.add('correct');
+        
+        feedback.innerHTML = `
+          <div style="color: #ef4444; font-size: 24px;">❌ Not quite!</div>
+          <div style="color: #fff;">Try again to unlock this ornament!</div>
+        `;
+
+        // Allow retry
+        setTimeout(() => {
+          options.forEach(opt => {
+            opt.style.pointerEvents = 'auto';
+            opt.classList.remove('correct', 'incorrect');
+          });
+          feedback.innerHTML = '';
+        }, 2000);
+      }
+    }
+
+    // Update ornament collection display
+    function updateOrnamentCollection() {
+      const display = document.getElementById('collectionDisplay');
+      display.innerHTML = '';
+
+      quizData.forEach((q) => {
+        const ornDiv = document.createElement('div');
+        ornDiv.className = 'collection-ornament';
+        ornDiv.textContent = q.ornament;
+        
+        if (!unlockedOrnaments.includes(q.ornament)) {
+          ornDiv.classList.add('locked');
+          ornDiv.title = 'Locked - Answer a question to unlock!';
+        } else {
+          ornDiv.title = 'Unlocked! Click to select for decorating';
+          ornDiv.onclick = () => selectOrnamentForDecorating(q.ornament);
+        }
+        
+        display.appendChild(ornDiv);
+      });
+
+      // Update instruction text
+      const instruction = document.getElementById('instruction');
+      if (instruction && unlockedOrnaments.length > 0) {
+        instruction.innerHTML = `🎄 Click the tree to add your earned ornaments! (${unlockedOrnaments.length}/${quizData.length} unlocked) 🎄`;
+      }
+    }
+
+    // Selected ornament for decorating
+    let selectedOrnament = null;
+
+    function selectOrnamentForDecorating(ornament) {
+      selectedOrnament = ornament;
+      
+      // Visual feedback
+      document.querySelectorAll('.collection-ornament').forEach(el => {
+        el.style.border = el.textContent === ornament ? '2px solid #4ade80' : 'none';
+        el.style.padding = el.textContent === ornament ? '5px' : '0';
+        el.style.borderRadius = '8px';
+      });
+    }
+
+    // Quiz modal close button
+    document.getElementById('closeQuizBtn').onclick = () => {
+      document.getElementById('quizModal').style.display = 'none';
+    };
+
+    // Take quiz button
+    document.getElementById('takeQuizBtn').onclick = showQuiz;
+
+    // Initialize quiz on page load
+    initializeQuiz();
+
+    // Initialize lights state from localStorage
+    const toggleLightsBtn = document.getElementById('toggleLightsBtn');
+    const intensityBtn = document.getElementById('intensityBtn');
+    
+    let lightsOn = localStorage.getItem('christmasLightsOn') === 'true';
+    let lightsIntensity = localStorage.getItem('christmasLightsIntensity') || 'low';
+
+    function updateLightsDisplay() {
+      // Remove all light classes
+      document.body.classList.remove('lights-low', 'lights-medium', 'lights-high');
+      
+      if (lightsOn) {
+        // Lights are ON - apply the current intensity
+        document.body.classList.add('lights-' + lightsIntensity);
+        toggleLightsBtn.textContent = '💡 Lights: ON';
+        toggleLightsBtn.classList.remove('lights-off');
+        
+        // Show intensity button
+        intensityBtn.style.display = 'block';
+        
+        // Update intensity button text
+        if (lightsIntensity === 'low') {
+          intensityBtn.textContent = '⚡ Low';
+        } else if (lightsIntensity === 'medium') {
+          intensityBtn.textContent = '⚡ Medium';
+        } else if (lightsIntensity === 'high') {
+          intensityBtn.textContent = '⚡ High';
+        }
+      } else {
+        // Lights are OFF
+        toggleLightsBtn.textContent = '💡 Lights: OFF';
+        toggleLightsBtn.classList.add('lights-off');
+        
+        // Hide intensity button
+        intensityBtn.style.display = 'none';
+      }
+      
+      // Save to localStorage
+      localStorage.setItem('christmasLightsOn', lightsOn);
+      localStorage.setItem('christmasLightsIntensity', lightsIntensity);
+    }
+
+    // Set initial state on page load
+    updateLightsDisplay();
+
+    // Toggle lights ON/OFF button
+    if (toggleLightsBtn) {
+      toggleLightsBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        lightsOn = !lightsOn;
+        updateLightsDisplay();
+      });
+    }
+
+    // Intensity button - cycles through Low -> Medium -> High -> Low
+    if (intensityBtn) {
+      intensityBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (lightsIntensity === 'low') {
+          lightsIntensity = 'medium';
+        } else if (lightsIntensity === 'medium') {
+          lightsIntensity = 'high';
+        } else if (lightsIntensity === 'high') {
+          lightsIntensity = 'low';
+        }
+        
+        updateLightsDisplay();
+      });
+    }
+
+    // Check if user has hidden the tree
+    const treeContainer = document.getElementById('treeContainer');
+    const instruction = document.getElementById('instruction');
+    const hideTreeBtn = document.getElementById('hideTreeBtn');
+    
+    function checkTreeVisibility() {
+      const isTreeHidden = localStorage.getItem('hideChristmasTree');
+      if (isTreeHidden === 'true') {
+        treeContainer.classList.add('tree-hidden');
+        instruction.classList.add('tree-hidden');
+        hideTreeBtn.classList.add('tree-hidden');
+        toggleLightsBtn.classList.add('tree-hidden');
+        intensityBtn.classList.add('tree-hidden');
+        document.getElementById('ornamentCollection').classList.add('tree-hidden');
+        document.getElementById('takeQuizBtn').classList.add('tree-hidden');
+        document.body.classList.add('border-hidden');
+        
+        // Hide snowflakes
+        const snowflakesContainer = document.querySelector('.snowflakes');
+        if (snowflakesContainer) {
+          snowflakesContainer.classList.add('tree-hidden');
+        }
+        
+        return false; // Tree should not be shown
+      }
+      return true; // Tree should be shown
+    }
+
+    // Hide tree button functionality
+    hideTreeBtn.addEventListener('click', function() {
+      if (confirm('Are you sure you want to hide the Christmas tree and all decorations? They will not appear again on future visits.\n\n💡 Secret tip: Type "hohoho" anywhere on the page to bring them back (Save the work first)!')) {
+        localStorage.setItem('hideChristmasTree', 'true');
+        
+        // Add transitions to all elements
+        treeContainer.style.transition = 'all 0.5s ease';
+        instruction.style.transition = 'all 0.5s ease';
+        hideTreeBtn.style.transition = 'all 0.5s ease';
+        toggleLightsBtn.style.transition = 'all 0.5s ease';
+        intensityBtn.style.transition = 'all 0.5s ease';
+        document.getElementById('ornamentCollection').style.transition = 'all 0.5s ease';
+        document.getElementById('takeQuizBtn').style.transition = 'all 0.5s ease';
+        
+        // Remove border effects
+        document.body.classList.add('border-hidden');
+        document.body.classList.remove('lights-low', 'lights-medium', 'lights-high');
+        
+        // Fade out all elements
+        const snowflakesContainer = document.querySelector('.snowflakes');
+        if (snowflakesContainer) {
+          snowflakesContainer.style.transition = 'all 0.5s ease';
+          snowflakesContainer.style.opacity = '0';
+        }
+        
+        treeContainer.style.opacity = '0';
+        treeContainer.style.transform = 'scale(0.5)';
+        instruction.style.opacity = '0';
+        hideTreeBtn.style.opacity = '0';
+        toggleLightsBtn.style.opacity = '0';
+        intensityBtn.style.opacity = '0';
+        document.getElementById('ornamentCollection').style.opacity = '0';
+        document.getElementById('takeQuizBtn').style.opacity = '0';
+        
+        setTimeout(() => {
+          treeContainer.classList.add('tree-hidden');
+          instruction.classList.add('tree-hidden');
+          hideTreeBtn.classList.add('tree-hidden');
+          toggleLightsBtn.classList.add('tree-hidden');
+          document.getElementById('ornamentCollection').classList.add('tree-hidden');
+          document.getElementById('takeQuizBtn').classList.add('tree-hidden');
+          if (snowflakesContainer) {
+            snowflakesContainer.classList.add('tree-hidden');
+          }
+        }, 500);
+      }
+    });
+
+    // Secret keyword to restore tree
+    let typedKeys = '';
+    const secretKeyword = 'hohoho';
+    
+    document.addEventListener('keydown', function(e) {
+      typedKeys += e.key;
+      
+      // Keep only last N characters where N is the length of the secret keyword
+      if (typedKeys.length > secretKeyword.length) {
+        typedKeys = typedKeys.slice(-secretKeyword.length);
+      }
+      
+      // Check if the secret keyword was typed
+      if (typedKeys.toLowerCase() === secretKeyword.toLowerCase()) {
+        const isTreeHidden = localStorage.getItem('hideChristmasTree');
+        if (isTreeHidden === 'true') {
+          // Show congratulatory message
+          const message = document.createElement('div');
+          message.className = 'secret-message';
+          message.innerHTML = '🎄 Ho Ho Ho! 🎄<br>The Christmas magic is back!<br>✨ Refreshing page... ✨';
+          document.body.appendChild(message);
+          
+          // Remove the hide flag and reload
+          localStorage.removeItem('hideChristmasTree');
+          
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        }
+        typedKeys = ''; // Reset
+      }
+    });
+
+    // Only build tree if it should be visible
+    const shouldShowTree = checkTreeVisibility();
+    
+    if (!shouldShowTree) {
+      // Exit early if tree is hidden
+    } else {
+      // Tree structure - all green tree foliage using various characters
+      const treeStructure = [
+        // Star
+        { row: 0, positions: [{ x: 150, char: '★', class: 'star gold' }] },
+        
+        // Top of tree - small
+        { row: 1, positions: [{ x: 145, char: '▲', class: '' }, { x: 155, char: '▲', class: 'dark-green' }] },
+        { row: 2, positions: [{ x: 135, char: '▲', class: 'dark-green' }, { x: 150, char: '▲', class: '' }, { x: 165, char: '▲', class: 'light-green' }] },
+        { row: 3, positions: [{ x: 125, char: '♣', class: 'light-green' }, { x: 140, char: '▲', class: '' }, { x: 155, char: '♣', class: 'dark-green' }, { x: 175, char: '▲', class: '' }] },
+        
+        // Middle of tree - getting wider
+        { row: 4, positions: [{ x: 115, char: '▲', class: '' }, { x: 130, char: '♣', class: 'dark-green' }, { x: 145, char: '▲', class: 'light-green' }, { x: 160, char: '♣', class: '' }, { x: 185, char: '▲', class: 'dark-green' }] },
+        { row: 5, positions: [{ x: 105, char: '♣', class: 'dark-green' }, { x: 120, char: '▲', class: '' }, { x: 135, char: '♣', class: 'light-green' }, { x: 150, char: '▲', class: 'dark-green' }, { x: 165, char: '♣', class: '' }, { x: 195, char: '▲', class: 'light-green' }] },
+        { row: 6, positions: [{ x: 95, char: '▲', class: 'light-green' }, { x: 110, char: '♣', class: '' }, { x: 125, char: '▲', class: 'dark-green' }, { x: 140, char: '♣', class: 'light-green' }, { x: 155, char: '▲', class: '' }, { x: 170, char: '♣', class: 'dark-green' }, { x: 205, char: '▲', class: '' }] },
+        { row: 7, positions: [{ x: 85, char: '♣', class: '' }, { x: 100, char: '▲', class: 'dark-green' }, { x: 115, char: '♣', class: 'light-green' }, { x: 130, char: '▲', class: '' }, { x: 145, char: '♣', class: 'dark-green' }, { x: 160, char: '▲', class: 'light-green' }, { x: 175, char: '♣', class: '' }, { x: 215, char: '▲', class: 'dark-green' }] },
+        
+        // Bottom of tree - widest part
+        { row: 8, positions: [{ x: 75, char: '▲', class: 'dark-green' }, { x: 90, char: '♣', class: '' }, { x: 105, char: '▲', class: 'light-green' }, { x: 120, char: '♣', class: 'dark-green' }, { x: 135, char: '▲', class: '' }, { x: 150, char: '♣', class: 'light-green' }, { x: 165, char: '▲', class: 'dark-green' }, { x: 180, char: '♣', class: '' }, { x: 225, char: '▲', class: 'light-green' }] },
+        { row: 9, positions: [{ x: 65, char: '♣', class: 'light-green' }, { x: 80, char: '▲', class: '' }, { x: 95, char: '♣', class: 'dark-green' }, { x: 110, char: '▲', class: 'light-green' }, { x: 125, char: '♣', class: '' }, { x: 140, char: '▲', class: 'dark-green' }, { x: 155, char: '♣', class: 'light-green' }, { x: 170, char: '▲', class: '' }, { x: 185, char: '♣', class: 'dark-green' }, { x: 235, char: '▲', class: '' }] },
+        
+        // Trunk
+        { row: 10, positions: [{ x: 140, char: '█', class: 'trunk' }, { x: 160, char: '█', class: 'trunk' }] },
+        { row: 11, positions: [{ x: 140, char: '█', class: 'trunk' }, { x: 160, char: '█', class: 'trunk' }] },
+        { row: 12, positions: [{ x: 140, char: '█', class: 'trunk' }, { x: 160, char: '█', class: 'trunk' }] }
+      ];
+
+      let currentRow = 0;
+      let currentPosInRow = 0;
+
+      function addNextSnowflake() {
+        if (currentRow >= treeStructure.length) {
+          return; // Tree is complete
+        }
+
+        const row = treeStructure[currentRow];
+        if (currentPosInRow >= row.positions.length) {
+          // Move to next row
+          currentRow++;
+          currentPosInRow = 0;
+          
+          if (currentRow >= treeStructure.length) {
+            loadSavedOrnaments(); // Load saved ornaments after tree is built
+            return; // Tree is complete
+          }
+          
+          // Slight delay before starting next row
+          setTimeout(addNextSnowflake, 150);
+          return;
+        }
+
+        const position = row.positions[currentPosInRow];
+        const flake = document.createElement('div');
+        flake.className = `tree-flake ${position.class}`;
+        flake.textContent = position.char;
+        flake.style.left = `${position.x}px`;
+        flake.style.top = `${currentRow * 30}px`;
+        flake.style.animationDelay = '0s';
+        
+        treeContainer.appendChild(flake);
+        
+        currentPosInRow++;
+        
+        // Add next snowflake after a short delay
+        setTimeout(addNextSnowflake, 100);
+      }
+
+      // Start building the tree after a short delay
+      setTimeout(addNextSnowflake, 1000);
+
+      // Interactive ornament adding with localStorage persistence
+      const ornamentSymbols = unlockedOrnaments.length > 0 ? unlockedOrnaments : ['🎄']; // Fallback if none unlocked
+      let ornamentIndex = 0;
+
+      // Auto-select first unlocked ornament if available
+      if (unlockedOrnaments.length > 0) {
+        selectedOrnament = unlockedOrnaments[0];
+        selectOrnamentForDecorating(selectedOrnament);
+      }
+
+      // Save ornaments to localStorage
+      function saveOrnaments() {
+        const ornaments = [];
+        document.querySelectorAll('.ornament').forEach(ornament => {
+          ornaments.push({
+            symbol: ornament.textContent,
+            x: ornament.style.left,
+            y: ornament.style.top
+          });
+        });
+        localStorage.setItem('christmasTreeOrnaments', JSON.stringify(ornaments));
+      }
+
+      // Load ornaments from localStorage
+      function loadSavedOrnaments() {
+        const saved = localStorage.getItem('christmasTreeOrnaments');
+        if (saved) {
+          const ornaments = JSON.parse(saved);
+          ornaments.forEach((ornamentData, index) => {
+            setTimeout(() => {
+              createOrnament(ornamentData.symbol, ornamentData.x, ornamentData.y);
+            }, index * 100);
+          });
+        }
+      }
+
+      // Create an ornament element
+      function createOrnament(symbol, x, y) {
+        const ornament = document.createElement('div');
+        ornament.className = 'ornament';
+        ornament.textContent = symbol;
+        ornament.style.left = x;
+        ornament.style.top = y;
+        ornament.style.animationDelay = `${Math.random() * 0.5}s`;
+        
+        // Remove ornament on click
+        ornament.addEventListener('click', function(event) {
+          event.stopPropagation();
+          ornament.style.transition = 'all 0.3s ease';
+          ornament.style.transform = 'scale(0) rotate(360deg)';
+          setTimeout(() => {
+            ornament.remove();
+            saveOrnaments(); // Save after removal
+          }, 300);
+        });
+
+        treeContainer.appendChild(ornament);
+      }
+
+      treeContainer.addEventListener('click', function(e) {
+        // Check if user has any unlocked ornaments
+        if (unlockedOrnaments.length === 0) {
+          alert('🎁 Answer quiz questions to unlock ornaments first!');
+          showQuiz();
+          return;
+        }
+
+        // Check if an ornament is selected
+        if (!selectedOrnament) {
+          alert('💡 Select an ornament from your collection first!');
+          return;
+        }
+
+        const rect = treeContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Only add ornaments within tree bounds
+        if (x > 40 && x < 260 && y > 20 && y < 340) {
+          createOrnament(selectedOrnament, `${x - 15}px`, `${y - 15}px`);
+          
+          // Cycle to next ornament in unlocked collection
+          const currentIndex = unlockedOrnaments.indexOf(selectedOrnament);
+          const nextIndex = (currentIndex + 1) % unlockedOrnaments.length;
+          selectedOrnament = unlockedOrnaments[nextIndex];
+          selectOrnamentForDecorating(selectedOrnament);
+          
+          saveOrnaments(); // Save after adding
+        }
+      });
+    }
+  </script>
+</body>
+</html>
